@@ -1,1 +1,4 @@
 /venv
+/api_academia/api/__pycache__
+/api_academia/api/migrations
+/api_academia/api_academia/__pycache__

@@ -15,7 +15,7 @@ class Estudiante(models.Model):
     apellido1 = models.CharField(max_length=50)
     apellido2 = models.CharField(max_length=50, null=True)
     apellido3 = models.CharField(max_length=50, null=True)
-    sexo = models.OneToOneField(Sexo, on_delete=models.SET_NULL, null=True)
+    sexo = models.ForeignKey(Sexo, on_delete=models.SET_NULL, null=True)
     fechanacimiento = models.DateField()
     foto = models.CharField(max_length=500, null=True)
     direccion = models.CharField(max_length=200)
@@ -24,7 +24,7 @@ class Estudiante(models.Model):
     telefono1 = models.PositiveIntegerField(null=True)
     telefono2 = models.PositiveIntegerField(null=True)
     correo = models.EmailField(null=True)
-    estado = models.OneToOneField(Estado, on_delete=models.SET_NULL, null=True)
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 class Administrativo(models.Model):
     nombre1 = models.CharField(max_length=50)
@@ -33,7 +33,7 @@ class Administrativo(models.Model):
     apellido1 = models.CharField(max_length=50)
     apellido2 = models.CharField(max_length=50, null=True)
     apellido3 = models.CharField(max_length=50, null=True)
-    sexo = models.OneToOneField(Sexo, on_delete=models.SET_NULL, null=True)
+    sexo = models.ForeignKey(Sexo, on_delete=models.SET_NULL, null=True)
     fechanacimiento = models.DateField()
     foto = models.CharField(max_length=500, null=True)
     direccion = models.CharField(max_length=200)
@@ -42,7 +42,7 @@ class Administrativo(models.Model):
     telefono1 = models.PositiveIntegerField(null=True)
     telefono2 = models.PositiveIntegerField(null=True)
     correo = models.EmailField(null=True)
-    estado = models.OneToOneField(Estado, on_delete=models.SET_NULL, null=True)
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 class Catedratico(models.Model):
     nombre1 = models.CharField(max_length=50)
@@ -51,7 +51,7 @@ class Catedratico(models.Model):
     apellido1 = models.CharField(max_length=50)
     apellido2 = models.CharField(max_length=50, null=True)
     apellido3 = models.CharField(max_length=50, null=True)
-    sexo = models.OneToOneField(Sexo, on_delete=models.SET_NULL, null=True)
+    sexo = models.ForeignKey(Sexo, on_delete=models.SET_NULL, null=True)
     fechanacimiento = models.DateField()
     foto = models.CharField(max_length=500, null=True)
     direccion = models.CharField(max_length=200)
@@ -60,7 +60,7 @@ class Catedratico(models.Model):
     telefono1 = models.PositiveIntegerField(null=True)
     telefono2 = models.PositiveIntegerField(null=True)
     correo = models.EmailField(null=True)
-    estado = models.OneToOneField(Estado, on_delete=models.SET_NULL, null=True)
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 class Curso(models.Model):
     nombre = models.CharField(max_length=100)
@@ -72,16 +72,16 @@ class TipoUsuario(models.Model):
 
 class Requisito(models.Model):
     requisito = models.CharField(max_length=200)
-    tipousuario = models.OneToOneField(TipoUsuario, on_delete=models.CASCADE)
+    tipousuario = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE)
     
 class RequisitoEstudiante(models.Model):
-    estudiante = models.OneToOneField(Estudiante, on_delete=models.SET_NULL, null=True)
-    requisito = models.OneToOneField(Requisito, on_delete=models.SET_NULL, null=True)
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.SET_NULL, null=True)
+    requisito = models.ForeignKey(Requisito, on_delete=models.SET_NULL, null=True)
     url = models.CharField(max_length=300)
 
 class RequisitoCatedratico(models.Model):
-    catedratico = models.OneToOneField(Catedratico, on_delete=models.SET_NULL, null=True)
-    requisito = models.OneToOneField(Requisito, on_delete=models.SET_NULL, null=True)
+    catedratico = models.ForeignKey(Catedratico, on_delete=models.SET_NULL, null=True)
+    requisito = models.ForeignKey(Requisito, on_delete=models.SET_NULL, null=True)
     url = models.CharField(max_length=300)
 
 class Ciclo(models.Model):
@@ -91,9 +91,9 @@ class Ciclo(models.Model):
     activo = models.BooleanField()
 
 class ClaseHeader(models.Model):
-    curso = models.OneToOneField(Curso, on_delete=models.SET_NULL, null=True)
-    ciclo = models.OneToOneField(Ciclo, on_delete=models.CASCADE)
-    catedratico = models.OneToOneField(Catedratico, on_delete=models.SET_NULL, null=True)
+    curso = models.ForeignKey(Curso, on_delete=models.SET_NULL, null=True)
+    ciclo = models.ForeignKey(Ciclo, on_delete=models.CASCADE)
+    catedratico = models.ForeignKey(Catedratico, on_delete=models.SET_NULL, null=True)
     fechainicio = models.DateField()
     fechafin = models.DateField()
     cupo = models.PositiveIntegerField()
@@ -101,17 +101,17 @@ class ClaseHeader(models.Model):
     seccion = models.CharField(max_length=2)
 
 class ClaseDesc(models.Model):
-    header = models.OneToOneField(ClaseHeader, on_delete=models.CASCADE)
-    estudiante = models.OneToOneField(Estudiante, on_delete=models.SET_NULL, null=True)
+    header = models.ForeignKey(ClaseHeader, on_delete=models.CASCADE)
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.SET_NULL, null=True)
     nota = models.PositiveIntegerField(default=0)
 
 class User(models.Model):
     user = models.CharField(max_length=30)
-    administrativo = models.OneToOneField(Administrativo, on_delete=models.CASCADE)
+    administrativo = models.ForeignKey(Administrativo, on_delete=models.CASCADE)
     password = models.CharField(max_length=256)
 
 class Emergencia(models.Model):
-    estudiante = models.OneToOneField(Estudiante, on_delete=models.CASCADE)
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=300)
     apellido = models.CharField(max_length=300)
     telefono = models.PositiveIntegerField()
