@@ -19,7 +19,7 @@ class Estudiante(models.Model):
     fechanacimiento = models.DateField()
     foto = models.CharField(max_length=500, null=True)
     direccion = models.CharField(max_length=200)
-    cui = models.CharField(max_length=13, null=True)
+    cui = models.CharField(max_length=15, null=True)
     carnet = models.CharField(max_length=13)
     telefono1 = models.PositiveIntegerField(null=True)
     telefono2 = models.PositiveIntegerField(null=True)
