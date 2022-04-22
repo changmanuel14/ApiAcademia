@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import SexoView, EstadoView, EstudianteView, CatedraticoView, AdministrativoView, CicloView
-from .views import CursoView, ClaseHeaderView, ClaseDescView, EmergenciaView
+from .views import CursoView, ClaseHeaderView, ClaseDescView, EmergenciaView, UserView
+from .views import RequisitoCatedraticoView, RequisitoEstudianteView
 
 urlpatterns =[
     path('sexos/', SexoView.as_view(), name='sexos_list'),
@@ -23,4 +24,10 @@ urlpatterns =[
     path('cdescs/<int:id>', ClaseDescView.as_view(), name='cdescs_process'),
     path('emergencias/', EmergenciaView.as_view(), name='emergencias_list'),
     path('emergencias/<int:id>', EmergenciaView.as_view(), name='emergencias_process'),
+    path('users/', UserView.as_view(), name='users_list'),
+    path('users/<int:id>', UserView.as_view(), name='users_process'),
+    path('rcatedraticos/', RequisitoCatedraticoView.as_view(), name='rcatedraticos_list'),
+    path('rcatedraticos/<int:id>', RequisitoCatedraticoView.as_view(), name='rcatedraticos_process'),
+    path('restudiantes/', RequisitoEstudianteView.as_view(), name='restudiantes_list'),
+    path('restudiantes/<int:id>', RequisitoEstudianteView.as_view(), name='restudiantes_process'),
     ]

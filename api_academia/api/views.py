@@ -9,6 +9,7 @@ from .models import Sexo, Estado, Estudiante, Catedratico, Administrativo
 from .models import Curso, Ciclo, ClaseHeader, ClaseDesc, Emergencia
 from .models import User, RequisitoCatedratico, RequisitoEstudiante, Requisito, TipoUsuario
 import json
+import hashlib
 
 # Create your views here.
 
@@ -391,7 +392,7 @@ class CicloView(View):
         else:
             ciclos = list(Ciclo.objects.values())
 
-        if len(cursos) > 0:
+        if len(ciclos) > 0:
             datos = {'message': 'success', 'ciclos': ciclos}
         else:
             datos = {'message': 'Datos no encontrados'}
@@ -416,7 +417,7 @@ class CicloView(View):
             ciclo.fechainicio = jd['fechainicio']
             ciclo.fechafin = jd['fechafin']
             ciclo.activo = jd['activo']
-            curso.save()
+            ciclo.save()
             datos = {'message': 'success'}
         else:
             datos = {'message': 'Datos no encontrados'}
@@ -443,7 +444,7 @@ class ClaseHeaderView(View):
         else:
             cheaders = list(ClaseHeader.objects.values())
 
-        if len(cursos) > 0:
+        if len(cheaders) > 0:
             datos = {'message': 'success', 'cheaders': cheaders}
         else:
             datos = {'message': 'Datos no encontrados'}
@@ -506,7 +507,7 @@ class ClaseDescView(View):
         else:
             cdescs = list(ClaseDesc.objects.values())
 
-        if len(cursos) > 0:
+        if len(cdescs) > 0:
             datos = {'message': 'success', 'cdescs': cdescs}
         else:
             datos = {'message': 'Datos no encontrados'}
@@ -530,11 +531,11 @@ class ClaseDescView(View):
         if len(cdescs) > 0:
             header = ClaseHeader.objects.get(id=jd['header'])
             estudiante = Estudiante.objects.get(id=jd['estudiante'])
-            cdescs = ClaseDesc.objects.get(id=id)
-            cdescs.header = header
-            cdescs.estudiante = estudiante
-            cdescs.nota = jd['nota']
-            cdescs.save()
+            cdesc = ClaseDesc.objects.get(id=id)
+            cdesc.header = header
+            cdesc.estudiante = estudiante
+            cdesc.nota = jd['nota']
+            cdesc.save()
             datos = {'message': 'success'}
         else:
             datos = {'message': 'Datos no encontrados'}
@@ -561,7 +562,7 @@ class EmergenciaView(View):
         else:
             emergencias = list(Emergencia.objects.values())
 
-        if len(cursos) > 0:
+        if len(emergencias) > 0:
             datos = {'message': 'success', 'emergencias': emergencias}
         else:
             datos = {'message': 'Datos no encontrados'}
@@ -583,12 +584,12 @@ class EmergenciaView(View):
         emergencias = list(ClaseDesc.objects.filter(id=id).values())
         if len(emergencias) > 0:
             estudiante = Estudiante.objects.get(id=jd['estudiante'])
-            emergencias = Emergencia.objects.get(id=id)
-            emergencias.estudiante = estudiante
-            emergencias.nombre = jd['nombre']
-            emergencias.apellido = jd['apellido']
-            emergencias.telefono = jd['telefono']
-            emergencias.save()
+            emergencia = Emergencia.objects.get(id=id)
+            emergencia.estudiante = estudiante
+            emergencia.nombre = jd['nombre']
+            emergencia.apellido = jd['apellido']
+            emergencia.telefono = jd['telefono']
+            emergencia.save()
             datos = {'message': 'success'}
         else:
             datos = {'message': 'Datos no encontrados'}
@@ -603,3 +604,223 @@ class EmergenciaView(View):
             datos = {'message': 'Datos no encontrados'}
         return JsonResponse(datos)
 
+class UserView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if id > 0:
+            users = list(User.objects.filter(id=id).values())
+            users = users[0]
+        else:
+            users = list(User.objects.values())
+
+        if len(users) > 0:
+            datos = {'message': 'success', 'users': users}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        
+        return JsonResponse(datos)
+    
+    def post(self, request):
+        jd = json.loads(request.body)
+        try:
+            administrativo = Administrativo.objects.get(id=jd['administrativo'])
+            password = jd['password']
+            result = hashlib.md5(password.encode())
+            pwd = result.hexdigest()
+            User.objects.create(administrativo = administrativo, user = jd['user'], password = pwd)
+            datos = {'message': 'success'}
+        except:
+            datos = {'message': 'Operacion no completada'}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        jd = json.loads(request.body)
+        users = list(User.objects.filter(id=id).values())
+        if len(users) > 0:
+            administrativo = Administrativo.objects.get(id=jd['administrativo'])
+            password = jd['password']
+            result = hashlib.md5(password.encode())
+            pwd = result.hexdigest()
+            user = User.objects.get(id=id)
+            user.administrativo = administrativo
+            user.user = jd['user']
+            user.password = pwd
+            user.save()
+            datos = {'message': 'success'}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        users = list(User.objects.filter(id=id).values())
+        if len(users) > 0:
+            User.objects.filter(id=id).delete()
+            datos = {'message': 'success'}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        return JsonResponse(datos)
+
+class RequisitoView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if id > 0:
+            requisitos = list(Requisito.objects.filter(id=id).values())
+            requisitos = requisitos[0]
+        else:
+            requisitos = list(Requisito.objects.values())
+
+        if len(requisitos) > 0:
+            datos = {'message': 'success', 'requisitos': requisitos}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        
+        return JsonResponse(datos)
+    
+    def post(self, request):
+        jd = json.loads(request.body)
+        try:
+            tipousuario = TipoUsuario.objects.get(id=jd['tipousuario'])
+            Requisito.objects.create(requisito = jd['requisito'], tipousuario = tipousuario)
+            datos = {'message': 'success'}
+        except:
+            datos = {'message': 'Operacion no completada'}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        jd = json.loads(request.body)
+        requisitos = list(Requisito.objects.filter(id=id).values())
+        if len(requisitos) > 0:
+            tipousuario = TipoUsuario.objects.get(id=jd['tipousuario'])
+            requisito = Requisito.objects.get(id=id)
+            requisito.tipousuario = tipousuario
+            requisito.requisito = jd['requisito']
+            requisito.save()
+            datos = {'message': 'success'}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        requisitos = list(Requisito.objects.filter(id=id).values())
+        if len(requisitos) > 0:
+            Requisito.objects.filter(id=id).delete()
+            datos = {'message': 'success'}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        return JsonResponse(datos)
+
+class RequisitoCatedraticoView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if id > 0:
+            rcatedraticos = list(RequisitoCatedratico.objects.filter(id=id).values())
+            rcatedraticos = rcatedraticos[0]
+        else:
+            rcatedraticos = list(RequisitoCatedratico.objects.values())
+
+        if len(rcatedraticos) > 0:
+            datos = {'message': 'success', 'rcatedraticos': rcatedraticos}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        
+        return JsonResponse(datos)
+    
+    def post(self, request):
+        jd = json.loads(request.body)
+        try:
+            catedratico = Catedratico.objects.get(id=jd['catedratico'])
+            requisito = Requisito.objects.get(id=jd['requisito'])
+            RequisitoCatedratico.objects.create(requisito = requisito, catedratico = catedratico, url = jd['url'])
+            datos = {'message': 'success'}
+        except:
+            datos = {'message': 'Operacion no completada'}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        jd = json.loads(request.body)
+        rcatedraticos = list(RequisitoCatedratico.objects.filter(id=id).values())
+        if len(rcatedraticos) > 0:
+            catedratico = Catedratico.objects.get(id=jd['catedratico'])
+            requisito = Requisito.objects.get(id=jd['requisito'])
+            rcatedratico = RequisitoCatedratico.objects.get(id=id)
+            rcatedratico.catedratico = catedratico
+            rcatedratico.requisito = requisito
+            rcatedratico.url = jd['url']
+            rcatedratico.save()
+            datos = {'message': 'success'}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        rcatedratico = list(RequisitoCatedratico.objects.filter(id=id).values())
+        if len(rcatedratico) > 0:
+            RequisitoCatedratico.objects.filter(id=id).delete()
+            datos = {'message': 'success'}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        return JsonResponse(datos)
+
+class RequisitoEstudianteView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if id > 0:
+            restudiantes = list(RequisitoEstudiante.objects.filter(id=id).values())
+            restudiantes = restudiantes[0]
+        else:
+            restudiantes = list(RequisitoEstudiante.objects.values())
+
+        if len(restudiantes) > 0:
+            datos = {'message': 'success', 'restudiantes': restudiantes}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        
+        return JsonResponse(datos)
+    
+    def post(self, request):
+        jd = json.loads(request.body)
+        try:
+            estudiante = Estudiante.objects.get(id=jd['estudiante'])
+            requisito = Requisito.objects.get(id=jd['requisito'])
+            RequisitoEstudiante.objects.create(requisito = requisito, estudiante = estudiante, url = jd['url'])
+            datos = {'message': 'success'}
+        except:
+            datos = {'message': 'Operacion no completada'}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        jd = json.loads(request.body)
+        restudiantes = list(RequisitoEstudiante.objects.filter(id=id).values())
+        if len(restudiantes) > 0:
+            estudiante = Estudiante.objects.get(id=jd['estudiante'])
+            requisito = Requisito.objects.get(id=jd['requisito'])
+            restudiante = RequisitoEstudiante.objects.get(id=id)
+            restudiante.estudiante = estudiante
+            restudiante.requisito = requisito
+            restudiante.url = jd['url']
+            restudiante.save()
+            datos = {'message': 'success'}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        restudiante = list(RequisitoEstudiante.objects.filter(id=id).values())
+        if len(restudiante) > 0:
+            RequisitoEstudiante.objects.filter(id=id).delete()
+            datos = {'message': 'success'}
+        else:
+            datos = {'message': 'Datos no encontrados'}
+        return JsonResponse(datos)

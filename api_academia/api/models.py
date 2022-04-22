@@ -108,7 +108,7 @@ class ClaseDesc(models.Model):
 class User(models.Model):
     user = models.CharField(max_length=30)
     administrativo = models.ForeignKey(Administrativo, on_delete=models.CASCADE)
-    password = models.CharField(max_length=256)
+    password = models.CharField(max_length=1000)
 
 class Emergencia(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
