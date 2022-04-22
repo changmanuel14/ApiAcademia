@@ -26,7 +26,7 @@ class SexoView(View):
             sexos = list(Sexo.objects.values())
 
         if len(sexos) > 0:
-            datos = {'message': 'success', 'sexos': sexos}
+            datos = {'sexos': sexos}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -76,7 +76,7 @@ class EstadoView(View):
             estados = list(Estado.objects.values())
 
         if len(estados) > 0:
-            datos = {'message': 'success', 'estados': estados}
+            datos = {'estados': estados}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -123,7 +123,7 @@ class EstudianteView(View):
             estudiantes = list(Estudiante.objects.values())
 
         if len(estudiantes) > 0:
-            datos = {'message': 'success', 'estudiantes': estudiantes}
+            datos = {'estudiantes': estudiantes}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -196,7 +196,7 @@ class CatedraticoView(View):
             catedraticos = list(Catedratico.objects.values())
 
         if len(catedraticos) > 0:
-            datos = {'message': 'success', 'catedraticos': catedraticos}
+            datos = {'catedraticos': catedraticos}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -269,7 +269,7 @@ class AdministrativoView(View):
             administrativos = list(Administrativo.objects.values())
 
         if len(administrativos) > 0:
-            datos = {'message': 'success', 'administrativos': administrativos}
+            datos = {'administrativos': administrativos}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -342,7 +342,7 @@ class CursoView(View):
             cursos = list(Curso.objects.values())
 
         if len(cursos) > 0:
-            datos = {'message': 'success', 'cursos': cursos}
+            datos = {'cursos': cursos}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -393,7 +393,7 @@ class CicloView(View):
             ciclos = list(Ciclo.objects.values())
 
         if len(ciclos) > 0:
-            datos = {'message': 'success', 'ciclos': ciclos}
+            datos = {'ciclos': ciclos}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -445,7 +445,7 @@ class ClaseHeaderView(View):
             cheaders = list(ClaseHeader.objects.values())
 
         if len(cheaders) > 0:
-            datos = {'message': 'success', 'cheaders': cheaders}
+            datos = {'cheaders': cheaders}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -508,7 +508,7 @@ class ClaseDescView(View):
             cdescs = list(ClaseDesc.objects.values())
 
         if len(cdescs) > 0:
-            datos = {'message': 'success', 'cdescs': cdescs}
+            datos = {'cdescs': cdescs}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -563,7 +563,7 @@ class EmergenciaView(View):
             emergencias = list(Emergencia.objects.values())
 
         if len(emergencias) > 0:
-            datos = {'message': 'success', 'emergencias': emergencias}
+            datos = {'emergencias': emergencias}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -617,7 +617,7 @@ class UserView(View):
             users = list(User.objects.values())
 
         if len(users) > 0:
-            datos = {'message': 'success', 'users': users}
+            datos = {'users': users}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -676,7 +676,7 @@ class RequisitoView(View):
             requisitos = list(Requisito.objects.values())
 
         if len(requisitos) > 0:
-            datos = {'message': 'success', 'requisitos': requisitos}
+            datos = {'requisitos': requisitos}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -728,7 +728,7 @@ class RequisitoCatedraticoView(View):
             rcatedraticos = list(RequisitoCatedratico.objects.values())
 
         if len(rcatedraticos) > 0:
-            datos = {'message': 'success', 'rcatedraticos': rcatedraticos}
+            datos = {'rcatedraticos': rcatedraticos}
         else:
             datos = {'message': 'Datos no encontrados'}
         
@@ -783,7 +783,7 @@ class RequisitoEstudianteView(View):
             restudiantes = list(RequisitoEstudiante.objects.values())
 
         if len(restudiantes) > 0:
-            datos = {'message': 'success', 'restudiantes': restudiantes}
+            datos = {'restudiantes': restudiantes}
         else:
             datos = {'message': 'Datos no encontrados'}
         
